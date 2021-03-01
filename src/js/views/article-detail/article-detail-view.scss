@@ -1,0 +1,57 @@
+.article-detail{
+  margin: 0px auto;
+  width: 80%;
+  text-align: left;
+
+  padding-top: 30px;
+
+  &__image{
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 5px;
+    text-align: center;
+
+    img{
+      width: 100%;
+      height: auto;
+      margin: 0px auto;
+      transition: 300ms all;
+      &:hover{
+        width: 105%;
+        transform: translateX(-2.5%);
+        transform: translateXçY(-2.5%);
+      }
+    }
+  }
+
+  &__date{
+    display: block;
+    color: rgb(95, 95, 95);
+    font-size: 0.8em;
+  }
+
+  &__content{
+    display: block;
+    margin-top: 30px;
+  }
+
+  .subheader{
+    margin-top: 15px;
+    margin-bottom: 0px;
+    border: none;
+  }
+
+  a{
+    text-decoration: none;
+    box-sizing: border-box;
+    margin-right: 20px;
+  }
+
+  .btn{
+    width: 100px;
+    text-align: center;
+    float: left;
+  }
+
+}
