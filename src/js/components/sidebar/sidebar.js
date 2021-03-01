@@ -18,17 +18,6 @@ const Sidebar = (params) => {
 		setRedirect(true);
 	}
 
-	
-  const deleteArticle = (e) => {
-		e.preventDefault();
-
-  }
-
-	const saveArticle = (e) => {
-		e.preventDefault();
-
-  }
-
 
 	return (
 		(redirect && search.length > 0) ?
@@ -46,13 +35,20 @@ const Sidebar = (params) => {
 						<h3>Actions</h3>
 						<Link to="/blog/create" className="btn btn--success btn--icon"> <FaRegPlusSquare /> </Link>
 						<Link to={"/blog/update/" + params.articleData._id} className="btn btn--warning btn--icon"> <FaEdit /> </Link>
-						<button onClick={ deleteArticle } className="btn btn--danger btn--icon"> <FaTrashAlt /> </button>
+						{params.deleteArticle &&
+							<button onClick={ params.deleteArticle } className="btn btn--danger btn--icon"> <FaTrashAlt /> </button>
+						}
 					</div>
 				}
 				{params.inArticle === "true" &&
 					<div className="sidebar__item">
 						<h3>Actions</h3>
-						<button onClick={ saveArticle } className="btn btn--success btn--icon"> <FaRegSave /> </button>
+						{params.saveArticle && 
+							<button onClick={ params.saveArticle } className="btn btn--success btn--icon"> <FaRegSave /> </button>
+						}
+						{params.deleteArticle &&
+							<button onClick={ params.deleteArticle } className="btn btn--danger btn--icon"> <FaTrashAlt /> </button>
+						}
 					</div>
 				}
 
