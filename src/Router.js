@@ -21,7 +21,7 @@ class Router extends Component {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/home" component={Home} />
                     <Route exact path="/blog" component={Blog} />
-                    <Route exact path="/blog/entry/:id" component={ArticleDetail} />
+                    <Route exact path="/blog/article/:id" component={ArticleDetail} />
                     <Route exact path="/blog/create" component={ArticleCreate} />
                     <Route exact path="/blog/update/:id" component={ArticleCreate} />
                     <Route exact path="/blog/search/:searchText" component={Search} />

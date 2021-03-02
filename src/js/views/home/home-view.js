@@ -9,7 +9,7 @@ const HomeView = () => {
 			<Slider title="Home" size="small" />
 			<div className="content">
 				<div className="content__body">
-					<h2 className="subheader"> Last Entries</h2>
+					<h2 className="subheader"> Last Articles</h2>
 					<Articles home="true"/>
 				</div>
 				<Sidebar blog="false" />

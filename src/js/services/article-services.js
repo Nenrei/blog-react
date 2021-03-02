@@ -28,7 +28,7 @@ export const removeArticle = (articleId) => {
 };
 
 export const insertArticle = (article) => {
-  const apiUrl = `${API_URL}/save`;
+  const apiUrl = `${API_URL}/saveArticle`;
   return axios.post(apiUrl, article).then((res) => res.data.article);
 };
 
@@ -39,6 +39,7 @@ export const updateArticle = (article) => {
 
 export const uploadImage = (articleId, formData) => {
   const apiUrl = `${API_URL}/upload-image/${articleId}`;
+  console.log(apiUrl);
   return axios.post(apiUrl, formData).then((res) => res.data.article);
 };
 

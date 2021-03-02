@@ -6,7 +6,7 @@ import Articles from '../../components/articles/articles'
 const SearchView = (params) => {
 	return (
 		<>
-			<Slider title={`Found entries with "${params.match.params.searchText}"`} size="small" />
+			<Slider title={`Found articles with "${params.match.params.searchText}"`} size="small" />
 			<div className="content">
 				<div className="content__body">
 					<Articles searchText={params.match.params.searchText} />

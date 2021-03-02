@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { getArticleById, getImage, removeArticle } from "../../services/article-services";
+import {
+  getArticleById,
+  getImage,
+  removeArticle,
+} from "../../services/article-services";
 import Sidebar from "../../components/sidebar/sidebar";
+import Comments from "../../components/comments/comments";
 import imgDefault from "../../../images/default.jpg";
 import Moment from "react-moment";
 import swal from "sweetalert";
@@ -39,15 +44,15 @@ const ArticleDetailView = (params) => {
           .then((resArticle) => {
             setArticleData(resArticle);
             swal(
-              "Entry removed",
-              "The entry was removed successfully",
+              "Article removed",
+              "The article was removed successfully",
               "success"
             );
             setStatus("deleted");
           })
           .catch((resError) => {});
       } else {
-        swal("The entry was not removed", "", "success");
+        swal("The article was not removed", "", "success");
       }
     });
   };
@@ -62,40 +67,46 @@ const ArticleDetailView = (params) => {
     <>
       <div className="content">
         <div className="content__body">
-
           {status === "deleted" && <Redirect to="/blog" />}
 
           {!loading && !error && articleData.title && (
-            <article className="article-detail">
-              <div className="article-detail__image">
-                {articleData.image ? (
-                  <img
-                    src={getImage(articleData.image)}
-                    alt={articleData.title}
-                  />
-                ) : (
-                  <img src={imgDefault} alt={articleData.title} />
-                )}
-              </div>
-              <h1 className="subheader">{articleData.title}</h1>
+              <article className="article-detail">
+                <div className="article-detail__image">
+                  {articleData.image ? (
+                    <img
+                      src={getImage(articleData.image)}
+                      alt={articleData.title}
+                    />
+                  ) : (
+                    <img src={imgDefault} alt={articleData.title} />
+                  )}
+                </div>
+                <h1 className="subheader">{articleData.title}</h1>
 
-              <span className="article-detail__date">
-                Published{" "}
-                <Moment locale="en" fromNow>
-                  {articleData.date}
-                </Moment>
-              </span>
+                <span className="article-detail__date">
+                  Published{" "}
+                  <Moment locale="en" fromNow>
+                    {articleData.date}
+                  </Moment>
+                </span>
 
-              <span className="article-detail__content">
-                {articleData.content}
-              </span>
+                <span className="article-detail__content">
+                  {articleData.content}
+                </span>
 
-              <div className="clearfix"></div>
-            </article>
+                <div className="clearfix"></div>
+
+                <Comments articleId={articleData._id}/>
+
+              </article>
           )}
         </div>
         {!loading && !error && articleData.title ? (
-          <Sidebar article="true" articleData={articleData} deleteArticle={deleteArticle} />
+          <Sidebar
+            article="true"
+            articleData={articleData}
+            deleteArticle={deleteArticle}
+          />
         ) : (
           <Sidebar article="false" />
         )}

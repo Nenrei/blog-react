@@ -70,14 +70,14 @@ const Articles = (params) => {
       {
         loading && !error &&
         <div>
-          <h3 className="status-title"> Loading entries ...</h3>
+          <h3 className="status-title"> Loading articles ...</h3>
           <h3 className="status-title status-title--small"> Wait a moment.</h3>
         </div>
       }
 
       {!loading && error && 
         <div>
-          <h3 className="status-title"> No entries found. </h3>
+          <h3 className="status-title"> No articles found. </h3>
           <h3 className="status-title status-title--small"> Try again later.</h3>
         </div>
       }
@@ -104,7 +104,7 @@ const Articles = (params) => {
               <span className="articles__item__content">
                 {article.contentShort}
               </span>
-              <Link to={'/blog/entry/' + article._id}>Read more...</Link>
+              <Link to={'/blog/article/' + article._id}>Read more...</Link>
 
               <div className="clearfix"></div>
 

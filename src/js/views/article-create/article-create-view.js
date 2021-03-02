@@ -8,15 +8,13 @@ import {
   getImage,
   insertArticle,
   updateArticle,
-	removeArticle,
+  removeArticle,
   uploadImage,
 } from "../../services/article-services";
 import imgDefault from "../../../images/default.jpg";
 import "./article-create-view.scss";
 
 const ArticleCreateView = (params) => {
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [articleData, setArticleData] = useState({});
   const [status, setStatus] = useState("waiting");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -24,33 +22,26 @@ const ArticleCreateView = (params) => {
   const titleRef = useRef();
   const contentRef = useRef();
 
-  const getArticle = () => {
-    const articleId = params.match.params.id;
-    getArticleById(articleId)
-      .then((resArticle) => {
-        setArticleData(resArticle);
-        setLoading(false);
-        console.log(articleData);
-        console.log(resArticle);
-      })
-      .catch((catchedError) => {
-        setError(true);
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
+	useEffect(() => {
     if (params.match.params.id) {
       getArticle();
     }
   }, []);
 
+  const getArticle = () => {
+    const articleId = params.match.params.id;
+    getArticleById(articleId)
+      .then((resArticle) => {
+        setArticleData(resArticle);
+      })
+      .catch((resError) => {
+				errorCallback(resError);
+      });
+  };
+
   const saveArticle = (event) => {
     event.preventDefault();
-
     changeState();
-
-		console.log(articleData);
 
     if (params.match.params.id) {
       updateArticle(articleData)
@@ -76,21 +67,17 @@ const ArticleCreateView = (params) => {
     setArticleData(resArticle);
 
     if (selectedFile !== null) {
-      console.log(articleData);
-      console.log(resArticle);
-
-      const articleId = articleData._id;
+      const articleId = resArticle._id;
       const formData = new FormData();
       formData.append("file0", selectedFile, selectedFile.name);
+
+      console.log(articleId);
+      console.log(formData);
 
       uploadImage(articleId, formData)
         .then((resArticle) => {
           setArticleData(resArticle);
-					swal(
-						"Success",
-						"The entry was saved successfully",
-						"success"
-					);
+          swal("Success", "The article was saved successfully", "success");
           setStatus("success");
         })
         .catch((resError) => {
@@ -102,22 +89,16 @@ const ArticleCreateView = (params) => {
           );
         });
     } else {
-			swal(
-				"Success",
-				"The entry was saved successfully",
-				"success"
-			);
+      swal("Success", "The article was saved successfully", "success");
       setStatus("success");
     }
   };
 
   const errorCallback = (resError) => {
     setStatus("failed");
-    setError(resError);
-
     swal(
       "Something gone wrong",
-      "There was an error and the entry was not saved correctly",
+      resError,
       "error"
     );
   };
@@ -131,26 +112,22 @@ const ArticleCreateView = (params) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-				console.log(articleData._id);
-				removeArticle(articleData._id)
-					.then((resArticle) => {
-						setArticleData(resArticle);
-						swal(
-							"Entry removed",
-							"The entry was removed successfully",
-							"success"
-						);
-						setStatus("deleted");
-					})
-					.catch((resError) => {
-						
+        console.log(articleData._id);
+        removeArticle(articleData._id)
+          .then((resArticle) => {
+            setArticleData(resArticle);
+            swal(
+              "Article removed",
+              "The article was removed successfully",
+              "success"
+            );
+            setStatus("deleted");
+          })
+          .catch((resError) => {
+						errorCallback(resError);
 					});
       } else {
-        swal(
-          "The entry was not removed",
-          "",
-          "success"
-        );
+        swal("The article was not removed", "", "success");
       }
     });
   };
@@ -160,20 +137,23 @@ const ArticleCreateView = (params) => {
   };
 
   const changeState = (event) => {
-    if (status !== "wainting") {
-      setArticleData({
-        title: titleRef.current.value,
-        content: contentRef.current.value,
-        contentShort: contentRef.current.value ? `${contentRef.current.value.substring(0, 90)} ...` : ``,
-        image: null
-      });
-    }
+    setArticleData({
+      title: titleRef.current.value,
+      content: contentRef.current.value,
+      contentShort: contentRef.current.value
+        ? `${contentRef.current.value.substring(0, 90)} ...`
+        : ``,
+      image: articleData.image,
+    });
   };
+
+  
+
 
   return (
     <>
-
-			{(status === "deleted" || status === "success") && <Redirect to="/blog" />}
+      {status === "deleted" && <Redirect to="/blog" />}
+      {status === "success" && <Redirect to={`/blog/article/${articleData._id}`} />}
 
       <Slider
         title={params.match.params.id ? "Update Article" : "New Article"}
@@ -192,7 +172,7 @@ const ArticleCreateView = (params) => {
               <input
                 type="text"
                 name="title"
-                defaultValue={articleData.title}
+                defaultValue={articleData ? articleData.title : ""}
                 ref={titleRef}
               />
             </div>
@@ -201,7 +181,7 @@ const ArticleCreateView = (params) => {
               <label htmlFor="content">Content</label>
               <textarea
                 name="content"
-                defaultValue={articleData.content}
+                defaultValue={articleData ? articleData.content : ""}
                 ref={contentRef}
               ></textarea>
             </div>
@@ -209,7 +189,7 @@ const ArticleCreateView = (params) => {
             <div className="mid-form__form-group">
               <div className="article-create__image">
                 <label htmlFor="file0">Image</label>
-                {articleData.image && (
+                {articleData && articleData.image && (
                   <img
                     src={getImage(articleData.image)}
                     alt={articleData.title}
@@ -218,14 +198,12 @@ const ArticleCreateView = (params) => {
               </div>
               <input type="file" name="file0" onChange={fileChange} />
             </div>
-
-            <input type="submit" value="Guardar" className="btn btn-success" />
           </form>
         </div>
         <Sidebar
           inArticle="true"
           saveArticle={saveArticle}
-          deleteArticle={deleteArticle}
+          deleteArticle={params.match.params.id ? deleteArticle : null}
         />
       </div>
     </>

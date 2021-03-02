@@ -53,7 +53,7 @@ const Sidebar = (params) => {
 				}
 
 				<div className="sidebar__item">
-					<h3>Find an entry</h3>
+					<h3>Find an article</h3>
 					<form className="sidebar__item__form" onSubmit={redirectToSearch}>
 						<input type="text" name="search" ref={searchRef} />
 						<input type="submit" name="submit" className="btn" value="Search" />

@@ -1,0 +1,58 @@
+.comments {
+  min-height: 500px;
+  margin-top: 100px;
+
+  border-top: 2px solid rgba(73,155,234,1);
+
+  &__list {
+    padding: 20px;
+    padding-top: 0;
+
+    &__no-comments {
+      color: rgb(95, 95, 95);
+    }
+  }
+
+  &__new-comment {
+    width: 100%;
+
+    border-top: 2px solid rgba(73,155,234,1);
+
+    label {
+      font-size: 17px;
+
+      display: block;
+
+      margin-top: 10px;
+      margin-bottom: 5px;
+
+      text-align: left;
+    }
+
+    input[type='text'],
+    textarea {
+      margin-bottom: 5px;
+      padding: 3px;
+
+      border: 1px solid #cccccc;
+    }
+
+    input[type='text']:focus,
+    textarea:focus {
+      box-shadow: 0 0 5px #cccccc;
+    }
+
+    input[type='text'] {
+      width: 50%;
+      height: 30px;
+    }
+
+    textarea {
+      min-width: 90%;
+      max-width: 90%;
+      height: 150px;
+      min-height: 150px;
+      max-height: 150px;
+    }
+  }
+}
